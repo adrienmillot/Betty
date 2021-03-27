@@ -1,0 +1,63 @@
+name: 'Betty'
+author: 'Adrien MILLOT'
+description: 'Holberton C linter'
+runs:
+  using: "composite"
+  steps:
+      # Checks out a copy of betty repository on the ubuntu-latest machine
+      - name: Check out betty repo
+        uses: actions/checkout@master
+        with:
+          repository: holbertonschool/betty
+          path: $GITHUB_ACTION_PATH/Betty
+
+      # Install Betty
+      - name: Install Betty
+        run: |
+          sudo $GITHUB_ACTION_PATH/Betty/install.sh
+        shell: bash
+
+      # Create the betty binary
+      - name: Create betty binary file
+        run: |
+          echo "#!/bin/bash" > $GITHUB_ACTION_PATH/Betty/betty |
+          echo "# Simply a wrapper script to keep you from having to use betty-style" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "# and betty-doc separately on every item." >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "# Originally by Tim Britton (@wintermanc3r), multiargument added by" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "# Larry Madeo (@hillmonkey)" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "BIN_PATH="/usr/local/bin"" >> B$GITHUB_ACTION_PATH/etty/betty |
+          echo "BETTY_STYLE="betty-style"" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "BETTY_DOC="betty-doc"" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "if [ "$#" = "0" ]; then" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "echo "No arguments passed."" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "exit 1" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "fi" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "for argument in "$@" ; do" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "echo -e "\n========== $argument =========="" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "${BIN_PATH}/${BETTY_STYLE} "$argument"" >> $GITHUB_ACTION_PATH/Betty/betty |
+          echo "${BIN_PATH}/${BETTY_DOC} "$argument"" >> $GITHUB_ACTION_PATH/Betty/betty |x
+          echo "done" >> $GITHUB_ACTION_PATH/Betty/betty
+        shell: bash
+
+      # Copy Betty binary
+      - name: Copy Betty/betty binary to bin directory
+        run: |
+          sudo cp betty /bin/betty
+        shell: bash
+
+      # Give executable rights
+      - name: Give executable rights to betty binary
+        run: |
+          sudo chmod a+x /bin/betty
+        shell: bash
+
+      - name: Betty
+        run: betty
+        shell: bash
+
+branding:
+  icon: 'check'
+  color: 'green'
